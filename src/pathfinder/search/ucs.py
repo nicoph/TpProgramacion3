@@ -23,5 +23,42 @@ class UniformCostSearch:
         
         # Add the node to the explored dictionary
         explored[node.state] = True
+
+        frontier = StackFrontier()
+        frontier.add(node)
+
+        # Initialize the visited matrix to False for all nodes
+        visited = [[False] * grid.width for _ in range(grid.height)]
+
+        while True:
+
+            # caso base
+            if frontier.is_empty():
+                return NoSolution(explored)
+
+            # sacar nodo de frontera
+            node = frontier.remove()
+
+            # poner explorado
+            explored[node.state] = True
+
+            # caso base
+            if node.state == grid.end:
+                return Solution(node, explored)
+
+            # ir añadiendo moviendo de a uno
+            neighbours = grid.get_neighbours(node.state)
+            for action, new_state in neighbours.items():
+                if not explored.get(new_state):
+                    new_node = Node("", new_state, node.cost + grid.get_cost(new_state))
+                    new_node.parent = node
+                    new_node.action = action
+                    frontier.add(new_node)
+                elif frontier.contains_state(new_state):
+                    for frontier_node in frontier.frontier:
+                        if frontier_node.state == new_state and frontier_node.cost > node.cost + grid.get_cost(new_state):
+                            frontier_node.cost = node.cost + grid.get_cost(new_state)
+                            frontier_node.parent = node
+                            frontier_node.action = action
+                            break
         
-        return NoSolution(explored)

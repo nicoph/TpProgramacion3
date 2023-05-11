@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TP: Buscador de caminos
 Buscador de caminos en Python. 
 
@@ -17,7 +16,3 @@ Consultar enunciado en el campus virtual de la materia.
 
 ## Licencia
 This project is licensed under the MIT License.
-=======
-# TpProgramacion3
-Trabajo Práctico Programación 3 Tecnicatura Universitaria en Inteligencia Artificial
->>>>>>> afbca604935d8e436a3883cf6e5bc33acd4e14b4

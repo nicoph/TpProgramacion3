@@ -27,7 +27,9 @@ class Frontier:
             bool: Whether the provided state exists
         """
         return any(node.state == state for node in self.frontier)
-
+    
+    
+    
     def is_empty(self) -> bool:
         """Check if the frontier is empty
 
