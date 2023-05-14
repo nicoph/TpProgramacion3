@@ -114,3 +114,21 @@ class PriorityQueueFrontier(Frontier):
         """
         _, node = heappop(self.frontier)
         return node
+
+    ####### Creamos este nuevo contains para usar en cola de prioridad
+    ####### El problema era que al usar en Priority Queue necesitamos pasarle prioridad + Nodo
+    
+    def contains_state__with_cost(self, state: tuple[int, int]) -> bool:
+        """Check if a state exists in the frontier
+
+        Args:
+            state (tuple[int, int]): Postion of a node
+
+        Returns:
+            bool: Whether the provided state exists
+        """
+
+        for _, n in self.frontier:
+            if n.state == state:
+                return True
+        return False
