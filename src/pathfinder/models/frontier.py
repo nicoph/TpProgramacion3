@@ -105,7 +105,13 @@ class PriorityQueueFrontier(Frontier):
                 return (priority, node)
 
         return None
-
+    
+    def get_node_by_state(self, state):
+        for _, node in self.frontier:
+            if node.state == state:
+                return node
+        return None
+    
     def pop(self) -> Node:
         """Remove a node from the frontier
 
