@@ -1,13 +1,12 @@
 from ..models.grid import Grid
-from ..models.frontier import StackFrontier
+from ..models.frontier import PriorityQueueFrontier
 from ..models.solution import NoSolution, Solution
 from ..models.node import Node
-
 
 class UniformCostSearch:
     @staticmethod
     def search(grid: Grid) -> Solution:
-        """Find path between two points in a grid using Uniform Cost Search
+        """Find path between two points in a grid using A* Search
 
         Args:
             grid (Grid): Grid of points
@@ -23,42 +22,34 @@ class UniformCostSearch:
         
         # Add the node to the explored dictionary
         explored[node.state] = True
+        
+        
 
-        frontier = StackFrontier()
-        frontier.add(node)
-
-        # Initialize the visited matrix to False for all nodes
-        visited = [[False] * grid.width for _ in range(grid.height)]
-
+        frontier = PriorityQueueFrontier()
+        frontier.add(node, node.cost )
+        
         while True:
 
-            # caso base
+            # Check if there are no more nodes in the frontier
             if frontier.is_empty():
                 return NoSolution(explored)
 
-            # sacar nodo de frontera
-            node = frontier.remove()
-
-            # poner explorado
+            # Remove the next node from the frontier
+            node = frontier.pop()
+            
+            # Mark the node as explored
             explored[node.state] = True
 
-            # caso base
+            # Check if we have reached the goal state
             if node.state == grid.end:
                 return Solution(node, explored)
 
-            # ir añadiendo moviendo de a uno
+            # Explore the neighbors of the current node
             neighbours = grid.get_neighbours(node.state)
-            for action, new_state in neighbours.items():
-                if not explored.get(new_state):
-                    new_node = Node("", new_state, node.cost + grid.get_cost(new_state))
-                    new_node.parent = node
-                    new_node.action = action
-                    frontier.add(new_node)
-                elif frontier.contains_state(new_state):
-                    for frontier_node in frontier.frontier:
-                        if frontier_node.state == new_state and frontier_node.cost > node.cost + grid.get_cost(new_state):
-                            frontier_node.cost = node.cost + grid.get_cost(new_state)
-                            frontier_node.parent = node
-                            frontier_node.action = action
-                            break
-        
+            for action, new_state in neighbours.items():   
+                #nombre = str(randint(1,100))
+                new_node = Node("",new_state, node.cost + grid.get_cost(new_state))
+                new_node.parent = node
+                new_node.action = action     
+                if new_node.state not in explored or  new_node.cost < grid.get_cost(new_node.state):#frontier.contains_state__with_cost(new_state) :
+                    frontier.add(new_node,new_node.cost)
